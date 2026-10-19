@@ -241,7 +241,7 @@ h1,h2,p{margin:0;font-weight:inherit}
 
 /* frase de apoio, sempre no mesmo lugar */
 #deixa{position:absolute;left:180px;right:180px;bottom:92px;font-size:40px;line-height:1.3;color:var(--fraca);transition:opacity .3s var(--ease),transform .4s var(--ease);z-index:4;pointer-events:none}
-#deixa span{display:block;opacity:0;animation:entra .7s cubic-bezier(.22,.8,.25,1) forwards}
+#deixa span{display:block}
 #deixa span.l0{color:var(--tinta);font-weight:600}
 #deixa.troca{opacity:0;transform:translateY(10px)}
 body.ensaio #deixa{bottom:250px}
@@ -272,8 +272,8 @@ body.ensaio #palco[data-cena="prova"] #deixa{top:60px;bottom:auto}
 
 /* painel de verdade, navegando */
 #c-painel .lado{position:absolute;left:180px;top:170px;width:900px}
-#c-painel .lado > *{opacity:0;animation:entra .6s var(--ease) forwards;animation-play-state:paused}
-#c-painel.on .lado > *{animation-play-state:running}
+.tempo{opacity:0;transform:translateY(16px);transition:opacity .6s cubic-bezier(.22,.8,.25,1),transform .7s cubic-bezier(.22,.8,.25,1)}
+.tempo.vis{opacity:1;transform:none}
 #c-painel .lado .item{font-size:52px;font-weight:600;letter-spacing:-.015em;margin-top:26px;display:flex;align-items:center;gap:22px}
 #c-painel .lado .item i{width:14px;height:14px;border-radius:50%;background:var(--teal);box-shadow:0 0 18px var(--teal);flex:0 0 auto}
 #c-painel .lado .fecho{font-size:46px;color:var(--ouro);font-weight:650;margin-top:56px;line-height:1.15}
@@ -328,9 +328,8 @@ body.ensaio #palco[data-cena="prova"] #deixa{top:60px;bottom:auto}
 #c-cif.on .brilho{animation:flash .9s var(--ease) .75s 1 forwards}
 @keyframes flash{0%{opacity:0}40%{opacity:1}100%{opacity:.25}}
 #c-cif .tres3{position:absolute;left:120px;right:120px;bottom:100px;display:grid;grid-template-columns:repeat(3,1fr);gap:56px}
-#c-cif .tres3 div{opacity:0;transform:translateY(18px);transition:opacity .45s var(--ease),transform .6s var(--ease);border-top:2px solid rgba(237,164,32,.7);padding-top:24px}
-#c-cif.on .tres3 div{opacity:1;transform:none}
-#c-cif.on .tres3 div:nth-child(1){transition-delay:.55s}#c-cif.on .tres3 div:nth-child(2){transition-delay:.7s}#c-cif.on .tres3 div:nth-child(3){transition-delay:.85s}
+#c-cif .tres3 div{border-top:2px solid rgba(237,164,32,.7);padding-top:24px}
+
 #c-cif .tres3 .rotulo{color:var(--ouro)}
 #c-cif .tres3 p{font-size:44px;font-weight:600;line-height:1.12;margin-top:14px;letter-spacing:-.015em;text-shadow:0 4px 30px rgba(0,0,0,.6)}
 /* microfone de verdade */
@@ -399,15 +398,15 @@ body.ensaio #palco[data-cena="prova"] #deixa{top:60px;bottom:auto}
 #c-pedido .leg{right:180px;bottom:auto;top:430px;text-align:right}
 /* cuidado: a cesta entra no painel quando ele fala de quem chega */
 #c-painel .cesta{position:absolute;inset:0;opacity:0;background-size:cover;background-position:center}
-#c-painel.on .cesta{animation:cesta 34s linear forwards}
+#c-painel .cesta{transition:opacity 1.2s var(--ease)}#c-painel.fase2 .cesta{opacity:1}
 @keyframes cesta{0%,63%{opacity:0}69%,100%{opacity:1}}
 #c-painel .cesta:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,12,16,.9) 0%,rgba(8,12,16,.45) 45%,rgba(8,12,16,.1) 100%)}
 #c-painel .cuidado{position:absolute;left:180px;bottom:150px;z-index:2}
-#c-painel .cuidado span{display:inline-block;font-size:44px;font-weight:600;margin-right:34px;opacity:0;animation:entra .7s var(--ease) forwards;animation-play-state:paused}
-#c-painel.on .cuidado span{animation-play-state:running}
-#c-painel.on .lado{animation:somelado 34s linear forwards}
+#c-painel .cuidado span{display:inline-block;font-size:44px;font-weight:600;margin-right:34px;opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .7s var(--ease)}
+#c-painel .cuidado.vis span{opacity:1;transform:none}#c-painel .cuidado.vis span:nth-child(2){transition-delay:.9s}#c-painel .cuidado.vis span:nth-child(3){transition-delay:1.8s}#c-painel .cuidado.vis span:nth-child(4){transition-delay:2.7s}
+#c-painel .lado,#c-painel .tel{transition:opacity 1s var(--ease)}#c-painel.fase2 .lado,#c-painel.fase2 .tel{opacity:0}
 @keyframes somelado{0%,62%{opacity:1}65%,100%{opacity:0}}
-#c-painel.on .tel{animation:flutua 7s ease-in-out infinite,somelado 34s linear forwards}
+
 /* final: o palco */
 #c-final .fundo{opacity:.0;filter:brightness(.55)}
 #c-final.on .fundo{opacity:1;transition:opacity 1.6s var(--ease)}
@@ -416,7 +415,7 @@ body.ensaio #palco[data-cena="prova"] #deixa{top:60px;bottom:auto}
 #c-final .centro{left:auto;right:150px;width:880px;text-align:left;padding:0!important;animation:none}
 #c-final .a,#c-final .b{font-size:74px}
 /* contexto, informação, formato: um de cada vez, no ritmo da fala */
-#c-cif.on .tres3 div:nth-child(1){transition-delay:.6s}#c-cif.on .tres3 div:nth-child(2){transition-delay:3.5s}#c-cif.on .tres3 div:nth-child(3){transition-delay:7s}
+
 
 /* modo ensaio */
 #ens-legenda,#ens-clique,#ens-inicio{display:none}
@@ -559,24 +558,24 @@ body.apresentador #ap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax
   <section class="cena" id="c-cif">
     <div class="faixas"></div><div class="brilho"></div><div class="veu2"></div>
     <div class="tres3">
-      <div><p class="rotulo">Contexto</p><p>quem pergunta,<br>e por quê</p></div>
-      <div><p class="rotulo">Informação</p><p>sete fontes: app, planilhas,<br>outros setores</p></div>
-      <div><p class="rotulo">Formato</p><p>o que aparece, para quem,<br>em quanto tempo</p></div>
+      <div class="tempo" data-t="0.8"><p class="rotulo">Contexto</p><p>quem pergunta,<br>e por quê</p></div>
+      <div class="tempo" data-t="4.3"><p class="rotulo">Informação</p><p>sete fontes: app, planilhas,<br>outros setores</p></div>
+      <div class="tempo" data-t="7.8"><p class="rotulo">Formato</p><p>o que aparece, para quem,<br>em quanto tempo</p></div>
     </div>
   </section>
 
   <section class="cena" id="c-painel">
     <div class="lado">
-      <p class="rotulo" style="color:var(--ouro);animation-delay:.2s">Painel de Célula · ao vivo</p>
-      <h2 class="media" style="margin-top:18px;animation-delay:.6s">7 fontes. <span class="ouro">1 tela.</span></h2>
-      <div class="item" style="animation-delay:3.9s"><i></i>427 células vivas</div>
-      <div class="item" style="animation-delay:7.3s"><i></i>ativas · atenção · paradas</div>
-      <div class="item" style="animation-delay:11.3s"><i></i>crianças · adolescentes · jovens</div>
-      <div class="item" style="animation-delay:16s"><i></i>no mapa da cidade</div>
-      <p class="fecho" style="animation-delay:17.6s">O que levava 3 dias,<br>hoje está na tela.</p>
+      <p class="rotulo" style="color:var(--ouro)">Painel de Célula · ao vivo</p>
+      <h2 class="media" style="margin-top:18px">7 fontes. <span class="ouro">1 tela.</span></h2>
+      <div class="item tempo" data-t="4"><i></i>427 células vivas</div>
+      <div class="item tempo" data-t="7.5"><i></i>ativas · atenção · paradas</div>
+      <div class="item tempo" data-t="11.0"><i></i>crianças · adolescentes · jovens</div>
+      <div class="item tempo" data-t="14.5"><i></i>no mapa da cidade</div>
+      <p class="fecho tempo" data-t="18.0">O que levava 3 dias,<br>hoje está na tela.</p>
     </div>
     <div class="cesta" data-fundo="cine-cesta"></div>
-    <div class="cuidado"><span style="animation-delay:25s">cesta básica</span><span style="animation-delay:26.3s">remédio</span><span style="animation-delay:28.5s">casamento</span><span style="animation-delay:29.9s">filhos</span></div>
+    <div class="fase2 tempo-fase" data-t="21.5"></div><div class="cuidado tempo-cuidado" data-t="25.0"><span>cesta básica</span><span>remédio</span><span>casamento</span><span>filhos</span></div>
     <div class="tel"><div class="notch"></div><div class="tela"><img data-real="celula-inicio" alt=""><img data-real="celula-hierarquia" alt=""></div><div class="dedo"></div></div>
   </section>
 
@@ -727,7 +726,7 @@ const BATIDAS = [
     visual: 'A conversa da vó com o neto aparece, bolha por bolha.',
     tom: 'Leve, com humor de sala. Na vó, sorria. "Eu sou o Fábio" simples, olhando para todos.',
     recup: 'Se a sala rir ou comentar, deixe. É rapport. Retome com "Eu sou o Fábio."' },
-  { cena: 'fabio', passo: 0, deixa: 'No WhatsApp, quem responde te conhece.@18.5|A IA só sabe o que você contar.@22.5', secao: 'tema', ancora: 'diferença',
+  { cena: 'fabio', passo: 0, deixa: 'No WhatsApp, quem responde te conhece.@18.5|A IA só sabe o que você contar.@22', secao: 'tema', ancora: 'diferença',
     fala: 'Trabalho com publicidade, na OAK Filmes, sirvo na igreja Carvalhos de Justiça, e sou da turma de vocês. [PAUSA 1s] Usar inteligência artificial é tão simples quanto mandar mensagem no WhatsApp. Você escreve, ela responde. Mas tem uma diferença. No WhatsApp, quem responde te conhece. A IA não sabe nada da sua vida. Ela só sabe o que você contar. [PAUSA 1s] Por isso hoje eu vou falar de inteligência artificial.',
     visual: 'Seu nome, pequeno e limpo. Você é a imagem principal.',
     tom: "Conversa de amigo. Suba um pouco na 'diferença' e desacelere em 'ela só sabe o que você contar'.",
@@ -742,7 +741,7 @@ const BATIDAS = [
     visual: '"Tecnologia" some e "É sobre comunicação." acende, com a onda dourada.',
     tom: 'Um passo à frente. "De comunicação" mais baixo que o resto. Depois, tom de quem vai contar um segredo.',
     recup: 'Daqui em diante é uma história. Conte, não recite.' },
-  { cena: 'celulas', passo: 0, deixa: 'O Pastor André pergunta.@19|A Franciele conta, uma por uma.@29', secao: 'dev', ancora: 'Franciele',
+  { cena: 'celulas', passo: 0, deixa: 'O Pastor André pergunta.@19|A Franciele conta, uma por uma.@22.5', secao: 'dev', ancora: 'Franciele',
     fala: 'A nossa igreja tem entre dez e doze mil pessoas. E ela funciona em células: grupos pequenos que se encontram uma vez por semana, para que ninguém fique sem cuidado. São mais de quatrocentas células, com líder, supervisor, coordenador e pastor de rede. Toda vez que o Pastor André, nosso pastor sênior, perguntava quantas células nós temos, quantas pessoas estão em célula, a pergunta caía na mesa da Franciele, da Central de Célula. E ela levava',
     visual: 'Mais de quatrocentos pontos: as células espalhadas como um mapa.',
     tom: 'Narrador: ritmo tranquilo, imagens claras. Fale o nome da Franciele com carinho, sem drama.',
@@ -752,7 +751,7 @@ const BATIDAS = [
     visual: 'Os pontos perdem a ordem; aparece "3 a 4 dias".',
     tom: "Peso em 'três, quatro dias'. 'Sensação. Não número.' devagar, uma palavra por vez.",
     recup: 'A palavra que segura este trecho é "sensação".' },
-  { cena: 'pedido', passo: 0, deixa: 'O problema não era a máquina.@16|Era o meu pedido.@18', secao: 'dev', ancora: 'enfeite',
+  { cena: 'pedido', passo: 0, deixa: 'O problema não era a máquina.@16|Era o meu pedido.@19.5', secao: 'dev', ancora: 'enfeite',
     fala: 'E ficou lindo... na conversa. Na hora de colocar no ar, não saía. Eu não sabia subir, não sabia terminar. Tentei de novo. E de novo. Foi frustrante. [PAUSA 1s] Mas eu não parei. E com o tempo eu entendi: o problema não era a máquina. Era o meu pedido. Eu pedia o enfeite e não contava o problema. [PAUSA 1s] Então eu fiz o que a gente aprende aqui na Vox.',
     visual: 'Um pedido curto e vago; a resposta vem desalinhada, pela metade.',
     tom: "Honesto e um pouco frustrado no começo, depois a virada: 'o problema era o meu pedido' com convicção.",
@@ -767,7 +766,7 @@ const BATIDAS = [
     visual: 'O Painel de Célula de verdade, navegando: células vivas, ativas, atenção, paradas, faixas de idade.',
     tom: 'Orgulho bom, de serviço. Desacelere na cesta básica, no remédio, na família. É a parte do coração.',
     recup: 'Se cortar algo aqui, guarde: "O que levava três dias, hoje está na tela."' },
-  { cena: 'mic', passo: 0, deixa: 'Clara: ganha alcance.@9.5|Confusa: …@12.4', secao: 'dev', ancora: 'microfone',
+  { cena: 'mic', passo: 0, deixa: 'Clara: ganha alcance.@9.5|Confusa: …@13', secao: 'dev', ancora: 'microfone',
     fala: 'A inteligência artificial é como um microfone. Ela não fala por você. Ela amplifica o que você fala. [PAUSA 1s] Quando a ideia sai clara, ela ganha alcance. Quando sai confusa...',
     visual: 'A linha vira onda, atravessa o microfone e sai maior.',
     tom: "Metáfora com calma. Faça o gesto do microfone. Suspenda a voz no 'quando sai confusa...'.",
@@ -792,7 +791,7 @@ const BATIDAS = [
     visual: '"O que eu vi", "o que eu preciso", "o pedido": uma linha só, em sequência.',
     tom: 'Sereno. Na CNV, fale devagar as três partes. Depois baixe o tom: vem coisa séria.',
     recup: 'Abaixe o tom em "Eu preciso contar uma." Vem coisa séria.' },
-  { cena: 'erro', passo: 0, deixa: 'Escala de pregadores · um teste no sistema de verdade@2.5', secao: 'dev', ancora: 'sistema de verdade', corte: true,
+  { cena: 'erro', passo: 0, deixa: 'Escala de pregadores · um teste no sistema de verdade@1.5', secao: 'dev', ancora: 'sistema de verdade', corte: true,
     fala: '[PAUSA 1s] Num outro aplicativo da igreja, o da escala de quem prega nos cultos, a IA rodou um teste dentro do sistema de verdade.',
     visual: 'Corte seco para o preto. Um único sinal vermelho.',
     tom: 'Voz baixa e grave. Parado. Nenhum sorriso.',
@@ -802,7 +801,7 @@ const BATIDAS = [
     visual: 'Registros vermelhos contaminam os registros certos.',
     tom: "Pausado. 'De verdade' com peso. Deixe os dois segundos de silêncio.",
     recup: 'Não faça piada. Deixe os dois segundos de silêncio.' },
-  { cena: 'erro', passo: 2, deixa: 'Hoje eu confiro tudo.@7|Quem assina o aplicativo sou eu.@9', secao: 'dev', ancora: 'conferir',
+  { cena: 'erro', passo: 2, deixa: 'Hoje eu confiro tudo.@7|Quem assina o aplicativo sou eu.@10.5', secao: 'dev', ancora: 'conferir',
     fala: '[PAUSA 1s] [LER DEVAGAR] A IA mudou o custo de construir. Não mudou a responsabilidade de conferir. [PAUSA 1s] Hoje eu confiro tudo. Quem assina o aplicativo continua sendo eu. [PAUSA 1s] E quando o painel da igreja deu certo, eu passei a ver a mesma dor em todo lugar.',
     visual: 'O vermelho é contido, os dados voltam à ordem e aparece a frase principal.',
     tom: "A frase principal: lenta, olhando para a Nicole. Depois firme: 'Quem assina continua sendo eu'.",
@@ -817,7 +816,7 @@ const BATIDAS = [
     visual: 'As quatro telas abrem para a constelação inteira.',
     tom: "'Quarenta e nove vezes' devagar. Depois um passo em direção à turma.",
     recup: 'Um passo à frente, na direção da turma.' },
-  { cena: 'cta', passo: 0, deixa: 'Em vez de "me faz um cardápio":@9|dois filhos · meia hora · cinco jantares · lista de compras@11', secao: 'fim', ancora: 'hoje à noite',
+  { cena: 'cta', passo: 0, deixa: 'Em vez de "me faz um cardápio":@9|dois filhos · meia hora · cinco jantares · lista de compras@12.5', secao: 'fim', ancora: 'hoje à noite',
     fala: 'Hoje à noite, abram uma inteligência artificial e façam um pedido como se estivessem preparando uma apresentação aqui na Vox: com contexto, com intenção e com um pedido claro. [PAUSA 1s] Em vez de "me faz um cardápio", digam: "eu tenho dois filhos, meia hora para cozinhar à noite, quero cinco jantares para a semana e a lista de compras no final". [PAUSA 1s] Vejam o que volta. [OLHAR PARA A SALA] Vocês já sabem fazer isso. Treinaram aqui o curso inteiro. [PAUSA 1s] Eu só descobri que funciona do outro lado também. [PAUSA 2s]',
     visual: 'O mosaico se recolhe; a linha de voz chega até a plateia com a instrução.',
     tom: "Convite caloroso e direto. O exemplo do cardápio com leveza. 'Vocês já sabem fazer isso' olhando nos olhos.",
@@ -882,7 +881,7 @@ function receber(msg) {
   if (modoAp) { if (msg.de === 'tela' && typeof msg.batida === 'number') apMostrar(msg.batida); }
   else if (msg.de === 'ap') {
     if (msg.cmd === 'ir') ir(msg.batida);
-    if (msg.cmd === 'mais') ir(atual + 1);
+    if (msg.cmd === 'mais') avancar();
     if (msg.cmd === 'menos') ir(atual - 1);
     if (msg.cmd === 'onde') enviar({ batida: atual });
   }
@@ -897,7 +896,7 @@ const TRAS = ['ArrowLeft','ArrowUp','PageUp','Backspace',','];
 let ultimo = -1e9;
 function passo(d) {
   const t = performance.now(); if (t - ultimo < 280) return; ultimo = t;
-  if (modoAp) enviar({ cmd: d > 0 ? 'mais' : 'menos' }); else { ir(atual + d); if (ENSAIO) ensaioToca(); }
+  if (modoAp) enviar({ cmd: d > 0 ? 'mais' : 'menos' }); else { if (d > 0 && !ENSAIO) avancar(); else ir(atual + d); if (ENSAIO) ensaioToca(); }
 }
 document.addEventListener('keydown', e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
@@ -1100,6 +1099,32 @@ function ligaVoz(fonte) {
 window.__ligaMic = () => { if (!navigator.mediaDevices) return aviso('Este navegador não deixa usar o microfone aqui.');
   navigator.mediaDevices.getUserMedia({ audio: true }).then(st => { ligaVoz(ac => ac.createMediaStreamSource(st)); aviso('A linha agora reage à sua voz.', 2500); }).catch(() => aviso('Microfone não liberado. Tudo segue normal.', 3000)); };
 
+/* ── itens que entram no ritmo da fala; o clique adianta o próximo ── */
+let fila = [], timers = [];
+function revela(el) { if (el.classList.contains('tempo-fase')) el.closest('.cena').classList.add('fase2'); else el.classList.add('vis'); el.dataset.feito = '1'; }
+function agendar(c) {
+  timers.forEach(clearTimeout); timers = [];
+  const els = [...c.querySelectorAll('.tempo,.tempo-fase,.tempo-cuidado'), ...document.querySelectorAll('#deixa .tempo')];
+  els.forEach(el => { el.classList.remove('vis'); delete el.dataset.feito; });
+  c.classList.remove('fase2');
+  fila = els.sort((a, b) => +a.dataset.t - +b.dataset.t);
+  if (ver || reduzido) { fila.forEach(revela); fila = []; return; }
+  const t0 = performance.now();
+  fila.forEach(el => timers.push(setTimeout(() => revela(el), +el.dataset.t * 1000)));
+  fila.t0 = t0;
+}
+function pendente() { return fila.find(el => !el.dataset.feito); }
+function avancar() {
+  const p = pendente();
+  if (p) { // adianta: mostra já e empurra o resto mantendo o mesmo ritmo
+    const atraso = +p.dataset.t;
+    timers.forEach(clearTimeout); timers = []; revela(p);
+    fila.filter(el => !el.dataset.feito).forEach(el => timers.push(setTimeout(() => revela(el), (+el.dataset.t - atraso) * 1000)));
+    return;
+  }
+  ir(atual + 1);
+}
+
 /* ── ir para uma batida ── */
 const reduzido = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const cenas = {}; document.querySelectorAll('.cena').forEach(c => cenas[c.id.slice(2)] = c);
@@ -1119,12 +1144,13 @@ function ir(n, instantaneo) {
   if (b.cena === 'celulas') pintarPontos(b.passo);
   if (b.cena === 'prova') posMosaico(b.passo);
   palco.dataset.cena = b.cena;
+  if (!b.deixa) { document.getElementById('deixa').innerHTML = ''; document.getElementById('deixa').dataset.v = ''; agendar(c); }
   document.getElementById('poeira').style.opacity = b.cena === 'erro' ? .15 : b.cena === 'final' ? 0 : 1;
   document.getElementById('luz').style.opacity = b.cena === 'entrada' ? 1 : 0;
   document.getElementById('malha').style.opacity = (b.cena === 'erro' || b.cena === 'final' || b.cena === 'entrada') ? 0 : 1;
   mudaLinha(b.cena + ':' + b.passo, instantaneo);
-  const dx = document.getElementById('deixa'), novo = b.deixa ? b.deixa.split('|').map((l, i) => { const m = l.match(/^(.*)@([\d.]+)$/); return `<span class="l${i}" style="animation-delay:${m ? m[2] : 1.2 + i * .6}s">${m ? m[1] : l}</span>`; }).join('') : '';
-  if (dx.dataset.v !== novo || true) { dx.dataset.v = novo; if (instantaneo) dx.innerHTML = novo; else { dx.classList.add('troca'); setTimeout(() => { dx.innerHTML = novo; dx.classList.remove('troca'); }, 220); } }
+  const dx = document.getElementById('deixa'), novo = b.deixa ? b.deixa.split('|').map((l, i) => { const m = l.match(/^(.*)@([\d.]+)$/); return `<span class="l${i} tempo" data-t="${m ? m[2] : 1.2 + i * 3.5}">${m ? m[1] : l}</span>`; }).join('') : '';
+  if (dx.dataset.v !== novo || true) { dx.dataset.v = novo; dx.innerHTML = novo; agendar(c); }
   if (!ver) enviar({ batida: n });
   try { sessionStorage.setItem('voxtalks-batida', n); } catch (e) {}
 }
