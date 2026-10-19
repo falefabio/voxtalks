@@ -422,6 +422,20 @@ body.ensaio #palco[data-cena="prova"] #deixa{top:60px;bottom:auto}
 /* contexto, informação, formato: um de cada vez, no ritmo da fala */
 
 
+#c-erro .errotx{position:absolute;left:180px;right:180px;bottom:130px;opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease),transform .6s var(--ease);z-index:2}
+#c-erro .errotx:before{content:"";position:absolute;left:-180px;right:-180px;bottom:-130px;height:560px;background:linear-gradient(0deg,rgba(5,9,12,.95),rgba(5,9,12,.6) 55%,transparent);z-index:-1}
+#c-erro:not(.p1) .errotx[data-passo="0"]{opacity:1;transform:none;transition-delay:.35s}
+#c-erro.p1:not(.p2) .errotx[data-passo="1"]{opacity:1;transform:none;transition-delay:.35s}
+#c-erro .et{font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-.02em;margin-top:14px}
+#c-erro .el{font-size:42px;line-height:1.3;margin-top:22px;font-weight:500;color:var(--tinta)}
+/* convite */
+#c-cta .convite{position:absolute;left:180px;right:180px;top:150px}
+#c-cta .cv1{font-size:54px;font-weight:650;line-height:1.18;letter-spacing:-.015em;margin-top:22px}
+#c-cta .cv2{font-size:40px;color:var(--fraca);margin-top:44px}
+#c-cta .cv3{font-size:44px;line-height:1.32;margin-top:14px;font-weight:600;border-left:4px solid var(--ouro);padding-left:30px}
+#c-cta .cv4{position:absolute;left:180px;bottom:130px;display:flex;gap:50px;font-size:40px;font-weight:700}
+#c-cta .cv4 span:last-child{color:var(--ouro)}
+/* frase de apoio visível também na versão limpa */
 /* modo ensaio */
 #ens-legenda,#ens-clique,#ens-inicio{display:none}
 body.ensaio #ens-legenda{display:block;position:absolute;left:0;right:0;bottom:0;padding:26px 120px 34px;background:linear-gradient(to top,rgba(5,9,12,.96) 70%,rgba(5,9,12,0));z-index:5}
@@ -470,7 +484,7 @@ body.apresentador #ap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax
 #ap .lista div.at{background:#1E2E3A;color:#fff}
 #ap .lista div.ja{color:#5E7381}
 #ap .estado{font-size:14px;color:#7F95A4}
-#deixa{display:none!important}</style>
+</style>
 </head>
 <body>
 <div id="janela">
@@ -610,10 +624,12 @@ body.apresentador #ap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax
     <div class="fundo kb" data-fundo="cine-erro"></div><div class="veu2"></div><div class="corte"></div>
     <div id="registros"></div>
     <div class="sinal"></div>
+    <div class="errotx" data-passo="0"><p class="rotulo" style="color:#FF9C8A">Escala de pregadores</p><h2 class="et">Um outro aplicativo da igreja:<br>quem prega em cada culto.</h2><p class="el tempo" data-t="3.5">A IA rodou um teste dentro do sistema de verdade.</p></div>
+    <div class="errotx" data-passo="1"><p class="rotulo" style="color:#FF9C8A">O erro</p><h2 class="et">O teste escalou o nosso pastor sênior.<br>De verdade.</h2><p class="el tempo" data-t="3.5">Para pregar num culto do calendário.</p></div>
     <div class="licao t">
       <div class="fio"></div>
       <p class="apoio">A IA mudou o custo de construir.</p>
-      <h2 class="media">Não mudou a responsabilidade<br>de conferir.</h2>
+      <h2 class="media">Não mudou a responsabilidade<br>de conferir.</h2><div data-passo="2"><p class="el tempo" data-t="5" style="margin-top:46px">Hoje eu confiro tudo.</p><p class="el tempo" data-t="8.5" style="color:var(--fraca)">Quem assina o aplicativo continua sendo eu.</p></div>
     </div>
   </section>
 
@@ -631,10 +647,13 @@ body.apresentador #ap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax
   </section>
 
   <section class="cena" id="c-cta">
-    <div class="esq">
-      <p class="rotulo quando">Hoje à noite</p>
-      <div class="media tres"><div class="t">Contexto.</div><div class="t">Intenção.</div><div class="t">Um pedido claro.</div></div>
+    <div class="convite">
+      <p class="rotulo quando" style="color:var(--ouro)">Hoje à noite</p>
+      <p class="cv1">Abram uma inteligência artificial e façam um pedido como se estivessem preparando uma apresentação aqui na Vox.</p>
+      <p class="cv2 tempo" data-t="9">Em vez de “me faz um cardápio”, digam:</p>
+      <p class="cv3 tempo" data-t="11.5">“Eu tenho dois filhos, meia hora para cozinhar à noite, quero 5 jantares para a semana e uma lista de compras ao final.”</p>
     </div>
+    <div class="cv4 tempo" data-t="20"><span>Contexto.</span><span>Intenção.</span><span>Um pedido claro.</span></div>
   </section>
 
   <section class="cena" id="c-final">
@@ -796,17 +815,17 @@ const BATIDAS = [
     visual: '"O que eu vi", "o que eu preciso", "o pedido": uma linha só, em sequência.',
     tom: 'Sereno. Na CNV, fale devagar as três partes. Depois baixe o tom: vem coisa séria.',
     recup: 'Abaixe o tom em "Eu preciso contar uma." Vem coisa séria.' },
-  { cena: 'erro', passo: 0, deixa: 'Escala de pregadores · um teste no sistema de verdade@1.5', secao: 'dev', ancora: 'sistema de verdade', corte: true,
+  { cena: 'erro', passo: 0, secao: 'dev', ancora: 'sistema de verdade', corte: true,
     fala: '[PAUSA 1s] Num outro aplicativo da igreja, o da escala de quem prega nos cultos, a IA rodou um teste dentro do sistema de verdade.',
     visual: 'Corte seco para o preto. Um único sinal vermelho.',
     tom: 'Voz baixa e grave. Parado. Nenhum sorriso.',
     recup: 'Fique parado. Sem gesto, sem sorriso.' },
-  { cena: 'erro', passo: 1, deixa: 'Escalou o pastor sênior. De verdade.@1.5', secao: 'dev', ancora: 'pastor sênior',
+  { cena: 'erro', passo: 1, secao: 'dev', ancora: 'pastor sênior',
     fala: 'E o teste escalou o nosso pastor sênior, de verdade, para pregar num culto do calendário. [PAUSA 2s] Ali eu aprendi a lição mais importante de todos esses meses.',
     visual: 'Registros vermelhos contaminam os registros certos.',
     tom: "Pausado. 'De verdade' com peso. Deixe os dois segundos de silêncio.",
     recup: 'Não faça piada. Deixe os dois segundos de silêncio.' },
-  { cena: 'erro', passo: 2, deixa: 'Hoje eu confiro tudo.@7|Quem assina o aplicativo sou eu.@10.5', secao: 'dev', ancora: 'conferir',
+  { cena: 'erro', passo: 2, secao: 'dev', ancora: 'conferir',
     fala: '[PAUSA 1s] [LER DEVAGAR] A IA mudou o custo de construir. Não mudou a responsabilidade de conferir. [PAUSA 1s] Hoje eu confiro tudo. Quem assina o aplicativo continua sendo eu. [PAUSA 1s] E quando o painel da igreja deu certo, eu passei a ver a mesma dor em todo lugar.',
     visual: 'O vermelho é contido, os dados voltam à ordem e aparece a frase principal.',
     tom: "A frase principal: lenta, olhando para a Nicole. Depois firme: 'Quem assina continua sendo eu'.",
@@ -821,7 +840,7 @@ const BATIDAS = [
     visual: 'As quatro telas abrem para a constelação inteira.',
     tom: "'Quarenta e nove vezes' devagar. Depois um passo em direção à turma.",
     recup: 'Um passo à frente, na direção da turma.' },
-  { cena: 'cta', passo: 0, deixa: 'Em vez de "me faz um cardápio":@9|dois filhos · meia hora · cinco jantares · lista de compras@12.5', secao: 'fim', ancora: 'hoje à noite',
+  { cena: 'cta', passo: 0, secao: 'fim', ancora: 'hoje à noite',
     fala: 'Hoje à noite, abram uma inteligência artificial e façam um pedido como se estivessem preparando uma apresentação aqui na Vox: com contexto, com intenção e com um pedido claro. [PAUSA 1s] Em vez de "me faz um cardápio", digam: "eu tenho dois filhos, meia hora para cozinhar à noite, quero cinco jantares para a semana e a lista de compras no final". [PAUSA 1s] Vejam o que volta. [OLHAR PARA A SALA] Vocês já sabem fazer isso. Treinaram aqui o curso inteiro. [PAUSA 1s] Eu só descobri que funciona do outro lado também. [PAUSA 2s]',
     visual: 'O mosaico se recolhe; a linha de voz chega até a plateia com a instrução.',
     tom: "Convite caloroso e direto. O exemplo do cardápio com leveza. 'Vocês já sabem fazer isso' olhando nos olhos.",
