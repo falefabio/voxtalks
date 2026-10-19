@@ -436,6 +436,13 @@ body.ensaio #palco[data-cena="prova"] #deixa{top:60px;bottom:auto}
 #c-cta .cv4{position:absolute;left:180px;bottom:130px;display:flex;gap:50px;font-size:40px;font-weight:700}
 #c-cta .cv4 span:last-child{color:var(--ouro)}
 /* frase de apoio visível também na versão limpa */
+/* filmes com avatar */
+#c-filme{background:radial-gradient(ellipse at 50% 45%,#13222D 0%,#0B141B 55%,#05090C 100%)}
+#c-filme .vbox{position:absolute;left:50%;top:60px;width:540px;height:960px;margin-left:-270px;border-radius:44px;overflow:hidden;border:10px solid #1C262D;box-shadow:0 50px 140px rgba(0,0,0,.6),0 0 120px rgba(237,164,32,.08);opacity:0;transform:scale(.94);transition:opacity .6s var(--ease),transform .8s cubic-bezier(.22,.8,.25,1);background:#000}
+#c-filme .vbox.largo{width:1600px;height:900px;margin-left:-800px;top:70px;border-radius:24px}
+#c-filme .vbox video{width:100%;height:100%;object-fit:cover;display:block}
+#c-filme .vleg{position:absolute;left:24px;bottom:22px;font-size:24px;letter-spacing:.14em;text-transform:uppercase;background:rgba(11,20,27,.78);border:1px solid rgba(237,164,32,.5);padding:10px 18px;border-radius:999px;color:#fff}
+#c-filme:not(.p1) .v0,#c-filme.p1:not(.p2) .v1,#c-filme.p2 .v2{opacity:1;transform:none}
 /* modo ensaio */
 #ens-legenda,#ens-clique,#ens-inicio{display:none}
 body.ensaio #ens-legenda{display:block;position:absolute;left:0;right:0;bottom:0;padding:26px 120px 34px;background:linear-gradient(to top,rgba(5,9,12,.96) 70%,rgba(5,9,12,0));z-index:5}
@@ -646,6 +653,12 @@ body.apresentador #ap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax
     <div class="leg"><p class="apoio" style="color:var(--tinta)">49 vezes, a mesma necessidade: <span class="ouro">clareza.</span></p></div>
   </section>
 
+  <section class="cena" id="c-filme">
+    <div class="vbox v0"><video src="videos/iris.mp4" poster="videos/iris.jpg" playsinline preload="auto"></video><p class="vleg">Íris · a assistente da ótica</p></div>
+    <div class="vbox v1"><video src="videos/serena.mp4" poster="videos/serena.jpg" playsinline preload="auto"></video><p class="vleg">Serena · psicóloga</p></div>
+    <div class="vbox v2 largo"><video src="videos/lu.mp4" poster="videos/lu.jpg" playsinline preload="auto"></video><p class="vleg">Lu · vendendo com IA</p></div>
+  </section>
+
   <section class="cena" id="c-cta">
     <div class="convite">
       <p class="rotulo quando" style="color:var(--ouro)">Hoje à noite</p>
@@ -835,6 +848,21 @@ const BATIDAS = [
     visual: 'Três aplicativos reais, em alta: a obra, a ótica e a psicóloga.',
     tom: 'Volte a respirar. Tom de quem mostra o trabalho de um amigo, não o próprio.',
     recup: 'Não leia as telas. Fale das pessoas que elas ajudam.' },
+  { cena: 'filme', passo: 0, secao: 'dev', ancora: 'Íris',
+    fala: '[O VÍDEO DA ÍRIS RODA COM SOM. DEIXE TERMINAR.]',
+    visual: 'Filme da Íris, a assistente da ótica, feito com IA.',
+    tom: 'Silêncio. Olhe para a tela junto com a turma.',
+    recup: 'Se o som não sair, siga falando por cima: é a Íris, da ótica.' },
+  { cena: 'filme', passo: 1, secao: 'dev', ancora: 'Serena',
+    fala: '[O VÍDEO DA SERENA RODA COM SOM. DEIXE TERMINAR.]',
+    visual: 'Filme da Serena, a assistente da psicóloga.',
+    tom: 'Silêncio. Deixe o vídeo falar.',
+    recup: 'Clique para seguir quando terminar.' },
+  { cena: 'filme', passo: 2, secao: 'dev', ancora: 'Lu',
+    fala: '[O VÍDEO DA LU RODA COM SOM. DEIXE TERMINAR.]',
+    visual: 'A Lu vendendo um produto, toda feita com IA.',
+    tom: 'Silêncio. Depois volte o olhar para a sala.',
+    recup: 'Clique para seguir quando terminar.' },
   { cena: 'prova', passo: 1, secao: 'dev', ancora: 'clareza',
     fala: 'Quarenta e nove vezes, a mesma coisa: alguém que precisava de clareza. [PAUSA 1s] Então eu quero deixar um pedido para vocês.',
     visual: 'As quatro telas abrem para a constelação inteira.',
@@ -1171,6 +1199,7 @@ function ir(n, instantaneo) {
   if (b.cena === 'celulas') pintarPontos(b.passo);
   if (b.cena === 'prova') posMosaico(b.passo);
   palco.dataset.cena = b.cena;
+  document.querySelectorAll('#c-filme video').forEach((v, k) => { if (b.cena === 'filme' && k === b.passo && !ver) { try { v.currentTime = 0; v.muted = false; v.play().catch(() => { v.muted = true; v.play().catch(() => {}); }); } catch (e) {} } else { try { v.pause(); } catch (e) {} } });
   if (!b.deixa) { document.getElementById('deixa').innerHTML = ''; document.getElementById('deixa').dataset.v = ''; agendar(c); }
   document.getElementById('poeira').style.opacity = b.cena === 'erro' ? .15 : b.cena === 'final' ? 0 : 1;
   document.getElementById('luz').style.opacity = b.cena === 'entrada' ? 1 : 0;
