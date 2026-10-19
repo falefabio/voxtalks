@@ -124,6 +124,10 @@ h1,h2,p{margin:0;font-weight:inherit}
 #c-mic .fr{position:absolute;left:180px;top:150px;right:180px}
 #c-mic .fr > div{position:absolute;left:0;top:0;opacity:0;transform:translateY(14px)}
 #c-mic.q0 .f0,#c-mic.q1 .f1,#c-mic.q2 .f2,#c-mic.q3 .f3,#c-mic.q4 .f4{opacity:1;transform:none;transition-delay:.15s}
+#c-mic .f0,#c-mic .f1{top:430px!important;width:860px}
+#c-mic .mt{font-size:58px;line-height:1.08;font-weight:700;letter-spacing:-.02em}
+#c-mic .ml{font-size:38px;line-height:1.25;margin-top:20px;font-weight:500;color:var(--tinta)}
+#c-mic .ml.ouro{color:var(--ouro);font-weight:700}
 #c-mic .num{font-size:30px;color:var(--ouro);letter-spacing:.18em;font-weight:600;display:block;margin-bottom:16px}
 #c-mic.p4 .mic{opacity:0}
 #c-mic .cnv{position:absolute;left:0;right:0;top:500px;height:120px}
@@ -593,8 +597,8 @@ body.apresentador #ap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax
       <line x1="40" y1="305" x2="110" y2="305" stroke="#8CA2B1" stroke-opacity=".6" stroke-width="5" stroke-linecap="round"/>
     </svg>
     <div class="fr">
-      <div class="t f0"><h2 class="media">Ela amplifica<br>o que você fala.</h2></div>
-      <div class="t f1"><h2 class="media">Confuso.<br><span class="fraca" style="color:var(--fraca)">Só que mais alto.</span></h2></div>
+      <div class="t f0" data-passo="0"><h2 class="mt">A inteligência artificial é como um microfone.</h2><p class="ml tempo" data-t="3.5">Ela não fala por você. Ela amplifica o que você fala.</p><p class="ml tempo" data-t="9.5">Quando a ideia é clara, ela ganha alcance.</p><p class="ml tempo" data-t="12.5">Quando é confusa…</p></div>
+      <div class="t f1" data-passo="1"><h2 class="mt">A confusão também fica mais&nbsp;alta.</h2><p class="ml tempo" data-t="4.5">E tudo o que eu precisei para afinar esse microfone, eu aprendi aqui.</p><p class="ml tempo ouro" data-t="9">Primeiro: clareza.</p></div>
       <div class="t f2"><span class="num">1 · CLAREZA</span><h2 class="media">contexto, informação<br>e formato</h2></div>
       <div class="t f3"><span class="num">2 · ESCUTA</span><h2 class="media">ler o que voltou<br>e ajustar</h2></div>
       <div class="t f4"><span class="num">3 · CORRIGIR SEM BRIGAR</span></div>
@@ -767,7 +771,7 @@ const BATIDAS = [
     visual: 'O Painel de Célula de verdade, navegando: células vivas, ativas, atenção, paradas, faixas de idade.',
     tom: 'Orgulho bom, de serviço. Desacelere na cesta básica, no remédio, na família. É a parte do coração.',
     recup: 'Se cortar algo aqui, guarde: "O que levava três dias, hoje está na tela."' },
-  { cena: 'mic', passo: 0, deixa: 'Clara: ganha alcance.@9.5|Confusa: …@13', secao: 'dev', ancora: 'microfone',
+  { cena: 'mic', passo: 0, secao: 'dev', ancora: 'microfone',
     fala: 'A inteligência artificial é como um microfone. Ela não fala por você. Ela amplifica o que você fala. [PAUSA 1s] Quando a ideia sai clara, ela ganha alcance. Quando sai confusa...',
     visual: 'A linha vira onda, atravessa o microfone e sai maior.',
     tom: "Metáfora com calma. Faça o gesto do microfone. Suspenda a voz no 'quando sai confusa...'.",
@@ -1107,7 +1111,8 @@ let fila = [], timers = [];
 function revela(el) { if (el.classList.contains('tempo-fase')) el.closest('.cena').classList.add('fase2'); else el.classList.add('vis'); el.dataset.feito = '1'; }
 function agendar(c) {
   timers.forEach(clearTimeout); timers = [];
-  const els = [...c.querySelectorAll('.tempo,.tempo-fase,.tempo-cuidado'), ...document.querySelectorAll('#deixa .tempo')];
+  const ps = BATIDAS[atual].passo;
+  const els = [...c.querySelectorAll('.tempo,.tempo-fase,.tempo-cuidado'), ...document.querySelectorAll('#deixa .tempo')].filter(el => { const d = el.closest('[data-passo]'); return !d || +d.dataset.passo === ps; });
   els.forEach(el => { el.classList.remove('vis'); delete el.dataset.feito; });
   c.classList.remove('fase2');
   fila = els.sort((a, b) => +a.dataset.t - +b.dataset.t);
