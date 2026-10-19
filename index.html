@@ -172,6 +172,17 @@ h1,h2,p{margin:0;font-weight:inherit}
 #c-final.p1 .b{opacity:1;transform:none}
 #c-final .b em{font-style:normal;color:var(--ouro)}
 
+/* modo ensaio */
+#ens-legenda,#ens-clique,#ens-inicio{display:none}
+body.ensaio #ens-legenda{display:block;position:absolute;left:0;right:0;bottom:0;padding:26px 120px 34px;background:linear-gradient(to top,rgba(5,9,12,.96) 70%,rgba(5,9,12,0));z-index:5}
+body.ensaio.sem-legenda #ens-legenda{display:none}
+#ens-legenda .tom{font-size:28px;color:var(--ouro);font-weight:600;letter-spacing:.01em;margin-bottom:10px}
+#ens-legenda .fala{font-size:33px;line-height:1.38;color:#E9F0F4}
+#ens-legenda .fala i{font-style:normal;color:#6F8797;font-size:26px;font-weight:600;letter-spacing:.04em}
+body.ensaio #ens-clique{display:block;position:absolute;right:60px;top:46px;font-size:30px;font-weight:800;color:#C6FF3D;letter-spacing:.1em;opacity:0;transition:opacity .25s;z-index:6}
+#ens-clique.vis{opacity:1}
+body.ensaio #ens-inicio{display:grid;place-content:center;text-align:center;position:absolute;inset:0;background:rgba(11,20,27,.94);z-index:7}
+body.ensaio.tocando #ens-inicio{display:none}
 /* tela de pronto: some sozinha */
 #pronto{position:absolute;right:60px;bottom:50px;font-size:24px;color:var(--apagada);letter-spacing:.14em;text-transform:uppercase;transition:opacity .8s var(--ease)}
 #pronto.sai{opacity:0}
@@ -334,6 +345,9 @@ body.apresentador #ap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax
 
   <canvas id="linha" width="1920" height="1080"></canvas>
   <div id="pronto">pronto</div>
+  <div id="ens-legenda"><div class="tom"></div><div class="fala"></div></div>
+  <div id="ens-clique">● CLIQUE</div>
+  <div id="ens-inicio"><div><p class="rotulo" style="color:var(--ouro)">Modo ensaio</p><h2 class="media" style="margin:18px 0 26px">Ouça a fala inteira<br>com as telas no tempo certo.</h2><p class="apoio">Espaço: começar e pausar · setas: pular · L: esconder a legenda</p></div></div>
 </div>
 </div>
 <div id="aviso"></div>
@@ -386,106 +400,132 @@ const BATIDAS = [
   { cena: 'entrada', passo: 0, secao: 'punch', ancora: 'silêncio',
     fala: '[ENTRAR E PARAR NO CENTRO] [3s DE SILÊNCIO] [OLHAR PARA A SALA] Eu não sei programar.',
     visual: 'Tela quase preta, só uma respiração de luz.',
+    tom: 'Calmo, firme, sem pressa. Voz média, quase baixa. Deixe o silêncio pesar antes de abrir a boca.',
     recup: 'Se clicou antes de falar, tudo bem: diga a frase olhando para a sala, não para a tela.' },
   { cena: 'frase', passo: 0, secao: 'punch', ancora: 'nenhuma',
     fala: '[PAUSA 1s] Nenhuma linha.',
     visual: '"Eu não sei programar." surge sólida; o cursor pisca uma vez e para.',
+    tom: "Mais devagar ainda. 'Nenhuma' com peso, como quem confessa.",
     recup: 'Se esquecer: "Nenhuma linha de código."' },
   { cena: 'frase', passo: 1, secao: 'punch', ancora: '49',
     fala: '[PAUSA 2s] E tenho quarenta e nove aplicativos funcionando no ar.',
     visual: '"Nenhuma" ganha peso; o resto do quadro recua.',
+    tom: 'Pausa, depois a frase reta, sem exagero. O número fala sozinho. Não sorria de orgulho.',
     recup: 'O número só aparece depois que você falar. Fale primeiro, clique depois.' },
   { cena: 'quarenta', passo: 0, secao: 'punch', ancora: 'WhatsApp',
     fala: '[PAUSA 2s] [DEIXAR O NÚMERO TRABALHAR] Antes de contar como, eu quero fazer uma pergunta. Quem aqui usa WhatsApp? [LEVANTAR A MÃO]',
     visual: 'O 49 ocupa a tela; atrás dele as telas dos aplicativos acendem como uma cidade à noite.',
+    tom: 'Agora solte a voz, tom de conversa. Levante a mão com um meio sorriso.',
     recup: 'Se ninguém levantar a mão: "Todo mundo, né? Eu também." e siga.' },
   { cena: 'quarenta', passo: 1, secao: 'punch', ancora: 'vó',
     fala: 'Quem tem em casa alguém com mais de oitenta anos que usa WhatsApp? [PAUSA 1s] E uma criança de sete, oito anos? [OLHAR PARA A SALA] Ninguém fez curso de WhatsApp. A vó aprendeu porque queria falar com o neto. [PAUSA 1s] Eu sou o Fábio.',
     visual: 'As telas perdem o foco; fica só a pergunta.',
+    tom: "Leve, com humor de sala. Na vó, sorria. 'Eu sou o Fábio' simples, olhando para todos.",
     recup: 'Se a sala rir ou comentar, deixe. É rapport. Retome com "Eu sou o Fábio."' },
   { cena: 'fabio', passo: 0, secao: 'tema', ancora: 'diferença',
     fala: 'Trabalho com publicidade, na OAK Filmes, sirvo na igreja Carvalhos de Justiça, e sou da turma de vocês. [PAUSA 1s] Usar inteligência artificial é tão simples quanto mandar mensagem no WhatsApp. Você escreve, ela responde. Mas tem uma diferença. No WhatsApp, quem responde te conhece. A IA não sabe nada da sua vida. Ela só sabe o que você contar. [PAUSA 1s] Por isso hoje eu vou falar de inteligência artificial. Mas não de tecnologia.',
     visual: 'Seu nome, pequeno e limpo. Você é a imagem principal.',
+    tom: "Conversa de amigo. Suba um pouco na 'diferença' e desacelere em 'ela só sabe o que você contar'.",
     recup: 'Frase-chave se der branco: "A IA só sabe o que você contar."' },
   { cena: 'tema', passo: 0, secao: 'tema', ancora: 'comunicação',
     fala: '[PAUSA 1s] De comunicação.',
     visual: 'A palavra "tecnologia" recua e perde o foco.',
+    tom: "Curto e seco. Um passo à frente. 'De comunicação' mais baixo que o resto.",
     recup: 'Diga "De comunicação" com calma, um passo à frente.' },
   { cena: 'tema', passo: 1, secao: 'tema', ancora: 'descobri',
     fala: '[PAUSA 2s] Deixa eu contar como eu descobri isso.',
     visual: 'Uma onda de voz atravessa a tela e "comunicação" assume o foco.',
+    tom: 'Tom de quem vai contar um segredo. Mais próximo, mais baixo.',
     recup: 'Daqui em diante é uma história. Conte, não recite.' },
   { cena: 'celulas', passo: 0, secao: 'dev', ancora: 'Franciele',
     fala: 'A nossa igreja tem entre dez e doze mil pessoas. E ela funciona em células: grupos pequenos que se encontram uma vez por semana, para que ninguém fique sem cuidado. São mais de quatrocentas células, com líder, supervisor, coordenador e pastor de rede. Toda vez que o Pastor André, nosso pastor sênior, perguntava quantas células nós temos, quantas pessoas estão em célula, a pergunta caía na mesa da Franciele, da Central de Célula. E ela levava',
     visual: 'Mais de quatrocentos pontos: as células espalhadas como um mapa.',
+    tom: 'Narrador: ritmo tranquilo, imagens claras. Fale o nome da Franciele com carinho, sem drama.',
     recup: 'Se esquecer a ordem: igreja, células, pastor pergunta, Franciele conta.' },
   { cena: 'celulas', passo: 1, secao: 'dev', ancora: 'sensação',
     fala: 'três, quatro dias contando. Uma por uma. [PAUSA 1s] E no fim, nem ela tinha certeza do número. A gente tinha a sensação de que todo mundo estava em célula. Sensação. Não número. [PAUSA 1s] Eu achei que a inteligência artificial ia resolver isso numa tarde. Pedi um painel bonito, moderno, com cara de IA.',
     visual: 'Os pontos perdem a ordem; aparece "3 a 4 dias".',
+    tom: "Peso em 'três, quatro dias'. 'Sensação. Não número.' devagar, uma palavra por vez.",
     recup: 'A palavra que segura este trecho é "sensação".' },
   { cena: 'pedido', passo: 0, secao: 'dev', ancora: 'enfeite',
     fala: 'E ficou lindo... na conversa. Na hora de colocar no ar, não saía. Eu não sabia subir, não sabia terminar. Tentei de novo. E de novo. Foi frustrante. [PAUSA 1s] Mas eu não parei. E com o tempo eu entendi: o problema não era a máquina. Era o meu pedido. Eu pedia o enfeite e não contava o problema. [PAUSA 1s] Então eu fiz o que a gente aprende aqui na Vox.',
     visual: 'Um pedido curto e vago; a resposta vem desalinhada, pela metade.',
+    tom: "Honesto e um pouco frustrado no começo, depois a virada: 'o problema era o meu pedido' com convicção.",
     recup: 'Frase-chave: "Eu pedia o enfeite e não contava o problema."' },
   { cena: 'cif', passo: 0, secao: 'dev', ancora: 'sete fontes',
     fala: 'Contexto: quem é a Franciele, o que o pastor pergunta toda semana, e por quê. Informação: onde os dados moram. No fim eram sete fontes: o aplicativo da igreja, planilhas preenchidas toda semana, sistemas de outros setores. E formato: o que precisa aparecer na tela, para quem, em quanto tempo. [PAUSA 1s] E aí saiu.',
     visual: 'Contexto, informação e formato se encaixam numa composição só.',
+    tom: "Didático, contando nos dedos: contexto, informação, formato. 'E aí saiu' com alívio e um sorriso.",
     recup: 'São as três palavras da aula de recursos visuais. Aponte uma por uma com a mão livre.' },
   { cena: 'celulas', passo: 2, secao: 'dev', ancora: 'cuidar',
     fala: 'Hoje o painel junta as sete fontes num lugar só. Mostra quantas células temos, quantas estão ativas, quantas precisam de ajuda. Quantas são de crianças, de adolescentes, de jovens. E onde cada uma fica no mapa da cidade. [PAUSA 1s] O que levava três dias, hoje está na tela. E com essa clareza a liderança cuida melhor de quem chega: com cesta básica, com remédio, com orientação para o casamento e para os filhos. [PAUSA 2s] Foi aí que eu entendi uma coisa.',
     visual: 'Os pontos voltam à ordem, nítidos: sete fontes, uma tela.',
+    tom: 'Orgulho bom, de serviço. Desacelere na cesta básica, no remédio, na família. É a parte do coração.',
     recup: 'Se cortar algo aqui, guarde: "O que levava três dias, hoje está na tela."' },
   { cena: 'mic', passo: 0, secao: 'dev', ancora: 'microfone',
     fala: 'A inteligência artificial é como um microfone. Ela não fala por você. Ela amplifica o que você fala. [PAUSA 1s] Quando a ideia sai clara, ela ganha alcance. Quando sai confusa...',
     visual: 'A linha vira onda, atravessa o microfone e sai maior.',
+    tom: "Metáfora com calma. Faça o gesto do microfone. Suspenda a voz no 'quando sai confusa...'.",
     recup: 'Pode fazer o gesto de segurar um microfone com a mão livre.' },
   { cena: 'mic', passo: 1, secao: 'dev', ancora: 'mais alta',
     fala: '[PAUSA 1s] a confusão também fica mais alta. [ESPERAR O SORRISO] E tudo o que eu precisei para afinar esse microfone, eu aprendi aqui. Primeiro: clareza.',
     visual: 'A onda de entrada chega com ruído e sai grande e igualmente confusa.',
+    tom: "Leve, deixe a sala rir. Depois volte ao tom de professor: 'Primeiro: clareza.'",
     recup: 'Espere a reação antes de seguir. Silêncio aqui é bom.' },
   { cena: 'mic', passo: 2, secao: 'dev', ancora: 'clareza',
     fala: 'Contexto, informação e formato. A aula de recursos visuais, lembram? Segundo: escutar o que voltou.',
     visual: 'O ruído se organiza numa linha nítida.',
+    tom: 'Rápido e claro, como quem lembra uma aula que todos fizeram.',
     recup: 'Uma frase por descoberta. Não explique demais.' },
   { cena: 'mic', passo: 3, secao: 'dev', ancora: 'rapport',
     fala: 'Ler a resposta como quem lê a plateia, e ajustar a próxima frase. É rapport, só que do outro lado tem uma máquina. Terceiro: corrigir sem brigar.',
     visual: 'A linha volta, faz um ciclo curto e muda de direção: diálogo.',
+    tom: "Olhe para a sala em 'como quem lê a plateia'. Tom cúmplice.",
     recup: 'Olhe para a sala ao dizer "como quem lê a plateia".' },
   { cena: 'mic', passo: 4, secao: 'dev', ancora: 'pedido claro',
     fala: 'Quando a IA erra, eu não xingo. Eu uso a comunicação não violenta: digo o que eu vi, o que eu preciso, e faço um pedido claro. [PAUSA 1s] E ela erra. Eu preciso contar uma.',
     visual: '"O que eu vi", "o que eu preciso", "o pedido": uma linha só, em sequência.',
+    tom: 'Sereno. Na CNV, fale devagar as três partes. Depois baixe o tom: vem coisa séria.',
     recup: 'Abaixe o tom em "Eu preciso contar uma." Vem coisa séria.' },
   { cena: 'erro', passo: 0, secao: 'dev', ancora: 'sistema de verdade', corte: true,
     fala: '[PAUSA 1s] Num outro aplicativo da igreja, o da escala de quem prega nos cultos, a IA rodou um teste dentro do sistema de verdade.',
     visual: 'Corte seco para o preto. Um único sinal vermelho.',
+    tom: 'Voz baixa e grave. Parado. Nenhum sorriso.',
     recup: 'Fique parado. Sem gesto, sem sorriso.' },
   { cena: 'erro', passo: 1, secao: 'dev', ancora: 'pastor sênior',
     fala: 'E o teste escalou o nosso pastor sênior, de verdade, para pregar num culto do calendário. [PAUSA 2s] Ali eu aprendi a lição mais importante de todos esses meses.',
     visual: 'Registros vermelhos contaminam os registros certos.',
+    tom: "Pausado. 'De verdade' com peso. Deixe os dois segundos de silêncio.",
     recup: 'Não faça piada. Deixe os dois segundos de silêncio.' },
   { cena: 'erro', passo: 2, secao: 'dev', ancora: 'conferir',
     fala: '[PAUSA 1s] [LER DEVAGAR] A IA mudou o custo de construir. Não mudou a responsabilidade de conferir. [PAUSA 1s] Hoje eu confiro tudo. Quem assina o aplicativo continua sendo eu. [PAUSA 1s] E quando o painel da igreja deu certo, eu passei a ver a mesma dor em todo lugar.',
     visual: 'O vermelho é contido, os dados voltam à ordem e aparece a frase principal.',
+    tom: "A frase principal: lenta, olhando para a Nicole. Depois firme: 'Quem assina continua sendo eu'.",
     recup: 'Esta é a frase que a Nicole vai lembrar. Diga olhando para ela.' },
   { cena: 'prova', passo: 0, secao: 'dev', ancora: 'mais justa',
     fala: 'Na OAK, a produtora onde eu trabalho, hoje a gente vê o que cada editor produz, e isso deixou a avaliação mais justa. Uma ótica. Uma psicóloga com a agenda dos pacientes. Uma obra com o cronograma.',
     visual: 'Quatro telas reais, grandes.',
+    tom: 'Volte a respirar. Tom de quem mostra o trabalho de um amigo, não o próprio.',
     recup: 'Não leia as telas. Fale das pessoas que elas ajudam.' },
   { cena: 'prova', passo: 1, secao: 'dev', ancora: 'clareza',
     fala: 'Quarenta e nove vezes, a mesma coisa: alguém que precisava de clareza. [PAUSA 1s] Então eu quero deixar um pedido para vocês.',
     visual: 'As quatro telas abrem para a constelação inteira.',
+    tom: "'Quarenta e nove vezes' devagar. Depois um passo em direção à turma.",
     recup: 'Um passo à frente, na direção da turma.' },
   { cena: 'cta', passo: 0, secao: 'fim', ancora: 'hoje à noite',
     fala: 'Hoje à noite, abram uma inteligência artificial e façam um pedido como se estivessem preparando uma apresentação aqui na Vox: com contexto, com intenção e com um pedido claro. [PAUSA 1s] Em vez de "me faz um cardápio", digam: "eu tenho dois filhos, meia hora para cozinhar à noite, quero cinco jantares para a semana e a lista de compras no final". [PAUSA 1s] Vejam o que volta. [OLHAR PARA A SALA] Vocês já sabem fazer isso. Treinaram aqui o curso inteiro. [PAUSA 1s] Eu só descobri que funciona do outro lado também. [PAUSA 2s]',
     visual: 'O mosaico se recolhe; a linha de voz chega até a plateia com a instrução.',
+    tom: "Convite caloroso e direto. O exemplo do cardápio com leveza. 'Vocês já sabem fazer isso' olhando nos olhos.",
     recup: 'Fale "vocês já sabem fazer isso" olhando nos olhos de um colega.' },
   { cena: 'final', passo: 0, secao: 'fim', ancora: 'máquinas',
     fala: 'A inteligência artificial deu voz às máquinas. [PAUSA 1s]',
     visual: 'Tela limpa: "A inteligência artificial deu voz às máquinas."',
+    tom: 'Lento, voz cheia, olhar no horizonte. Respire depois.',
     recup: 'Respire antes da última frase.' },
   { cena: 'final', passo: 1, secao: 'fim', ancora: 'a minha',
     fala: 'A Vox me ensinou a usar a minha. [SILÊNCIO 2s] [NÃO DIZER MAIS NADA] [OLHAR PARA A NICOLE, DEPOIS PARA A SALA]',
     visual: '"A Vox me ensinou a usar a minha." assume o foco. Tela imóvel.',
+    tom: "A frase mais lenta da noite. Baixe no 'a minha'. Depois silêncio total.",
     recup: 'Não diga "é isso". Segure o silêncio até alguém aplaudir.' },
 ];
 
@@ -513,7 +553,9 @@ const HEROIS = ['03-painel-oak','30-iris','26-serena','19-obra-em-etapas'];
 const N = BATIDAS.length;
 const hash = location.hash;
 const modoAp = hash.startsWith('#apresentador');
-const ver = hash.match(/^#ver-(\d+)/);           // quadro estático, usado nas prévias e nos PDFs
+const ver = hash.match(/^#ver-(\d+)/);
+const ENSAIO = typeof DURACOES !== 'undefined' && !ver && !hash.startsWith('#apresentador');
+const GRAVAR = ENSAIO && hash === '#gravar';           // quadro estático, usado nas prévias e nos PDFs
 let atual = 0;
 
 /* ── canal entre janelas: BroadcastChannel + postMessage + localStorage ── */
@@ -548,11 +590,13 @@ const TRAS = ['ArrowLeft','ArrowUp','PageUp','Backspace',','];
 let ultimo = -1e9;
 function passo(d) {
   const t = performance.now(); if (t - ultimo < 280) return; ultimo = t;
-  if (modoAp) enviar({ cmd: d > 0 ? 'mais' : 'menos' }); else ir(atual + d);
+  if (modoAp) enviar({ cmd: d > 0 ? 'mais' : 'menos' }); else { ir(atual + d); if (ENSAIO) ensaioToca(); }
 }
 document.addEventListener('keydown', e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const k = e.key;
+  if (ENSAIO && (k === ' ' || k === 'Spacebar')) { e.preventDefault(); if (!e.repeat) ensaioAlterna(); return; }
+  if (ENSAIO && (k === 'l' || k === 'L')) { document.body.classList.toggle('sem-legenda'); return; }
   if (FRENTE.includes(k)) { e.preventDefault(); if (!e.repeat) passo(1); return; }
   if (TRAS.includes(k)) { e.preventDefault(); if (!e.repeat) passo(-1); return; }
   if (k === 'Home') { e.preventDefault(); modoAp ? enviar({ cmd: 'ir', batida: 0 }) : ir(0); return; }
@@ -757,6 +801,34 @@ function ir(n, instantaneo) {
 window.__ir = (n) => ir(n, true);
 if (ver) addEventListener('hashchange', () => { const m = location.hash.match(/^#ver-(\d+)/); if (m) ir(+m[1], true); });
 
+
+/* ── modo ensaio: a voz conduz, a tela muda no instante do clique ── */
+function ensaioLegenda() {
+  const b = BATIDAS[atual];
+  document.querySelector('#ens-legenda .tom').textContent = 'Como falar: ' + b.tom;
+  document.querySelector('#ens-legenda .fala').innerHTML = b.fala.replace(/\[([^\]]+)\]/g, '<i>[$1]</i>');
+}
+const audio = ENSAIO && !GRAVAR ? new Audio() : null;
+let tocando = false, tGrav = null;
+function flashClique() { const c = document.getElementById('ens-clique'); c.classList.add('vis'); setTimeout(() => c.classList.remove('vis'), 700); }
+function proxima() {
+  if (atual >= N - 1) { tocando = false; document.body.classList.remove('tocando'); return; }
+  flashClique(); ir(atual + 1); ensaioToca();
+}
+function ensaioToca() {
+  if (!ENSAIO) return; ensaioLegenda();
+  if (!tocando) return;
+  if (GRAVAR) { clearTimeout(tGrav); tGrav = setTimeout(proxima, DURACOES[atual] * 1000); return; }
+  audio.src = 'audio/b' + String(atual).padStart(2, '0') + '.mp3';
+  audio.onended = proxima; audio.play().catch(() => {});
+}
+function ensaioAlterna() {
+  if (!tocando) { tocando = true; document.body.classList.add('tocando'); if (audio && audio.src && audio.paused && audio.currentTime > 0 && !audio.ended) audio.play(); else ensaioToca(); }
+  else { tocando = false; audio && audio.pause(); clearTimeout(tGrav); document.body.classList.remove('tocando'); }
+}
+window.__gravar = () => { tocando = true; document.body.classList.add('tocando'); ir(0, true); ensaioToca(); };
+if (ENSAIO) document.body.classList.add('ensaio');
+
 /* ── pré-carregar tudo, só então mostrar "pronto" ── */
 const todas = [...document.images];
 Promise.all(todas.map(im => (im.decode ? im.decode() : Promise.resolve()).catch(() => {}))).then(() => {
@@ -769,7 +841,7 @@ Promise.all(todas.map(im => (im.decode ? im.decode() : Promise.resolve()).catch(
     return;
   }
   let ini = 0; try { ini = +(sessionStorage.getItem('voxtalks-batida') || 0); } catch (e) {}
-  ir(ini, true);
+  ir(ENSAIO ? 0 : ini, true); if (ENSAIO) ensaioLegenda();
   setTimeout(() => document.getElementById('pronto').classList.add('sai'), 1800);
   document.documentElement.dataset.pronto = '1';
 });
